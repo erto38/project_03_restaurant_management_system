@@ -1,0 +1,21 @@
+restaurant-management-system/
+│
+├── main.py
+├── tables.py
+├── menu.py
+├── orders.py
+├── storage.py
+├── reports.py
+│
+├── data/
+│   ├── menu.json
+│   ├── tables.json
+│   └── orders.json
+│
+├── tests/
+│   ├── test_orders.py
+│   ├── test_tables.py
+│   └── test_menu.py
+│
+├── README.md
+└── .gitignore
