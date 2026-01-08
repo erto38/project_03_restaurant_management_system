@@ -2,9 +2,9 @@ from datetime import datetime
 
 def initialize_tables(path: str) -> list:
     try:
-        with open(path, "r") as file:
-            return eval(file.read())
-    except FileNotFoundError:
+        with open(path, "r") as f:
+            return eval(f.read())
+    except:
         return []
 
 def add_table(tables: list, table_data: dict) -> list:
