@@ -2,74 +2,67 @@ from tables import *
 from menu import *
 from orders import *
 from storage import *
+from reports import *
 
 DATA_DIR = "data"
+
 tables, menu, orders = load_state(DATA_DIR)
 
-def main_menu():
+def main():
+    print("Restaurant Management System")
+    print("Data loaded.")
+
     while True:
-        print("\nRestaurant Management System")
-        print("1. Add Table")
+        print("\n1. Add Table")
         print("2. Add Menu Item")
         print("3. Open Order")
+        print("4. Daily Report")
         print("0. Exit")
 
         choice = input("Select: ")
 
         if choice == "1":
-            add_table_flow()
+            num = int(input("Table number: "))
+            cap = int(input("Capacity: "))
+            add_table(tables, {
+                "number": num,
+                "capacity": cap,
+                "status": "free",
+                "server": "",
+                "party_size": 0,
+                "start_time": None
+            })
+            print("Table added.")
+
         elif choice == "2":
-            add_menu_flow()
+            item_id = input("ID: ")
+            name = input("Name: ")
+            price = float(input("Price: "))
+            add_menu_item(menu, {
+                "id": item_id,
+                "name": name,
+                "price": price,
+                "category": "main",
+                "vegetarian": False
+            })
+            print("Menu item added.")
+
         elif choice == "3":
-            open_order_flow()
+            table_no = int(input("Table number: "))
+            order = open_order(table_no)
+            orders.append(order)
+            print("Order opened.")
+
+        elif choice == "4":
+            print(daily_sales_report(orders))
+
         elif choice == "0":
-            print("Goodbye!")
+            save_state(DATA_DIR, tables, menu, orders)
+            print("Data saved. Goodbye.")
             break
+
         else:
-            print("Invalid option. Try again.")
-
-    save_state(DATA_DIR, tables, menu, orders)
-
-def add_table_flow():
-    try:
-        number = int(input("Table number: "))
-        capacity = int(input("Capacity: "))
-    except ValueError:
-        print("Invalid number! Please enter digits only.")
-        return
-
-    tables.append({
-        "number": number,
-        "capacity": capacity,
-        "status": "free",
-        "server": "",
-        "party_size": 0,
-        "start_time": None
-    })
-    print(f"Table {number} added.")
-
-def add_menu_flow():
-    item_id = input("Item ID: ")
-    name = input("Name: ")
-    try:
-        price = float(input("Price: "))
-    except ValueError:
-        print("Invalid price!")
-        return
-
-    menu[item_id] = {"id": item_id, "name": name, "price": price, "category": "", "vegetarian": False}
-    print("Menu item added.")
-
-def open_order_flow():
-    try:
-        table_number = int(input("Enter table number: "))
-    except ValueError:
-        print("Invalid table number!")
-        return
-
-    order = open_order(table_number)
-    orders.append(order)
-    print(f"Order opened for table {table_number}.")
+            print("Invalid option.")
 
 if __name__ == "__main__":
-    main_menu()
+    main()
