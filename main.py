@@ -6,31 +6,32 @@ from reports import *
 import atexit
 
 DATA_DIR = "data"
+
 tables, menu, orders = load_state(DATA_DIR)
 atexit.register(lambda: save_state(DATA_DIR, tables, menu, orders))
 
-def safe_int(prompt):
+def safe_int(msg):
     try:
-        return int(input(prompt))
+        return int(input(msg))
     except ValueError:
-        print("Invalid number.")
+        print("Please enter a number.")
         return None
 
-def safe_float(prompt):
+def safe_float(msg):
     try:
-        return float(input(prompt))
+        return float(input(msg))
     except ValueError:
-        print("Invalid price.")
+        print("Please enter a valid price.")
         return None
 
 def main():
-    print("Restaurant Management System")
+    print("=== Restaurant Management System ===")
 
     while True:
         print("\n1. Add Table")
         print("2. Add Menu Item")
         print("3. Open Order")
-        print("4. Daily Report")
+        print("4. Daily Sales Report")
         print("0. Exit")
 
         choice = input("Select: ")
@@ -52,7 +53,7 @@ def main():
             print("Table added.")
 
         elif choice == "2":
-            item_id = input("ID: ")
+            item_id = input("Item ID: ")
             name = input("Name: ")
             price = safe_float("Price: ")
             if price is None:
@@ -81,7 +82,8 @@ def main():
             print("Order opened.")
 
         elif choice == "4":
-            print(daily_sales_report(orders))
+            report = daily_sales_report(orders)
+            print("Daily Revenue:", report["daily_revenue"])
 
         elif choice == "0":
             print("Goodbye.")
